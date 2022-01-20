@@ -5,7 +5,7 @@ TOKEN_MAX_AGE = 60*60*6
 
 # rate limit - keep this reasonably small to avoid going over quota
 PAGESIZE = 300
-CALL_LIMIT = int(1000/PAGESIZE)
+CALL_LIMIT = int(20000/PAGESIZE)
 CALL_PERIOD = 60
 
 
