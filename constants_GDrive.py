@@ -1,5 +1,15 @@
 # Class constants
 
+# credentials token max age (seconds) 6 hours
+TOKEN_MAX_AGE = 60*60*6
+
+# rate limit - keep this reasonably small to avoid going over quota
+PAGESIZE = 300
+CALL_LIMIT = int(1000/PAGESIZE)
+CALL_PERIOD = 60
+
+
+
 # https://developers.google.com/drive/api/v3/mime-types
 MIMETYPES = {'audio': 'application/vnd.google-apps.audio',
               'docs': 'application/vnd.google-apps.document',
@@ -42,6 +52,9 @@ CORPORA = {'user': {'params': {
                             'includeItemsFromAllDrives': True,
                             'supportsAllDrives': True},
                     'description': "A combination of 'user' and 'drive' for all drives where the user is a member"}}
+
+
+
 
 # https://developers.google.com/drive/api/v3/reference/files
 FILE_FIELDS = {'Methods',
@@ -104,5 +117,6 @@ FILE_FIELDS = {'Methods',
  'viewersCanCopyContent',
  'webContentLink',
  'webViewLink',
- 'writersCanShare'}
+ 'writersCanShare',
+}
     
