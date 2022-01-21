@@ -34,7 +34,7 @@ MIMETYPES = {'audio': 'application/vnd.google-apps.audio',
               'unknown': 'application/vnd.google-apps.unknown',
               'video': 'application/vnd.google-apps.video',
               }
-FIELDS_DEFAULT = ['id', 'name', 'kind', 'mimeType']
+FIELDS_DEFAULT = ['id', 'name', 'kind', 'mimeType', 'webViewLink']
 
 # corpora: https://developers.google.com/drive/api/v3/reference/files/list
 # spaces to search
