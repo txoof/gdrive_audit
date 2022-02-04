@@ -1,11 +1,13 @@
 # Class constants
 
-# credentials token max age (seconds) 6 hours
-TOKEN_MAX_AGE = 60*60*6
+# # credentials token max age (seconds) 6 hours
+# TOKEN_MAX_AGE = 60*60*2
 
 # rate limit - keep this reasonably small to avoid going over quota
 PAGESIZE = 300
-CALL_LIMIT = int(20000/PAGESIZE)
+# number of calls per period
+CALL_LIMIT = int(100)
+# period size
 CALL_PERIOD = 60
 
 
@@ -32,7 +34,7 @@ MIMETYPES = {'audio': 'application/vnd.google-apps.audio',
               'unknown': 'application/vnd.google-apps.unknown',
               'video': 'application/vnd.google-apps.video',
               }
-FIELDS_DEFAULT = ['id', 'name', 'kind', 'mimeType']
+FIELDS_DEFAULT = ['id', 'name', 'kind', 'mimeType', 'webViewLink']
 
 # corpora: https://developers.google.com/drive/api/v3/reference/files/list
 # spaces to search
