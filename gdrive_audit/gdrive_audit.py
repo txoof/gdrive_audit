@@ -22,7 +22,7 @@ import sys
 
 from pathlib import Path
 
-from humanfriendly import prompts, 
+from humanfriendly import prompts
 import textwrap
 
 
