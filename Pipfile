@@ -10,6 +10,7 @@ google-auth-httplib2 = "*"
 google-auth-oauthlib = "*"
 ratelimit = "*"
 humanfriendly = "*"
+pyinstaller = "*"
 
 [dev-packages]
 
