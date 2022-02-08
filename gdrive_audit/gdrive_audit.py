@@ -39,7 +39,7 @@ from library.GDrive import GDriveError
 
 
 
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 
@@ -102,9 +102,10 @@ def recurse_folders(drive, parents,
         logger.error(f'error accessing google drive: {e}')
         skipped.append(parents)
         result = {}
-        
+                
     for f in result:
         if drive.MIMETYPES['folder'] == f.get('mimeType'):
+            print(f'Searching folder {i.get("name", "no name")}')
             return_files, return_skipped = recurse_folders(drive=drive, parents=f['id'], 
                                          fields=fields, 
                                          file_list=file_list,
@@ -114,6 +115,7 @@ def recurse_folders(drive, parents,
             skipped + return_files
         else:
             file_list.append(f)
+            print(f'found {len(file_list)} files so far...')
     return (file_list, skipped)
             
 
@@ -135,7 +137,7 @@ def get_folder_id():
         retry -= 1
         url = prompts.prompt_for_input('Paste the URL of a Google Drive folder to audit:\n')
         
-        match = re.match("https:\/\/drive\.google\.com(?:\/\w+)+\/(\w+)(?:\?\S+)?$", url)
+        match = re.match("https:\/\/drive\.google\.com\/(?:\S+\/)([a-zA-Z0-9-]+)(?:\S+)?$", url)
         if not match:
             print('That does not appear to be a valid google drive folder URL')
             continue
@@ -273,6 +275,16 @@ def main():
 
 
 if __name__ == "__main__":
+    try:
+        idx = sys.argv.index('-l')
+    except ValueError:
+        idx = None
+
+    if idx:
+        try:
+            logger.root.setLevel(sys.argv[idx+1])
+        except ValueError:
+            pass    
     f = main()
 
 
