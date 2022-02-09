@@ -53,6 +53,7 @@ def do_exit(exit_level=0, message='', testing=False):
         print(f'TESTING--EXIT MESSAGE: ({exit_level}){message}')
     elif exit_level > 0:
         logger.warning(f'exiting before completion with exit code {exit_level}: {message}')
+        print('.\n'*5)
         print('exiting due to errors:')
         print(message)
         sys.exit(exit_level)
@@ -161,7 +162,7 @@ def get_secrets():
             logger.debug(f'trying to move secrets from {constants.SECRETS_PATHS["downloaded"]}')
             shutil.move(constants.SECRETS_PATHS['downloaded'], constants.SECRETS_PATHS['saved'])
         except FileNotFoundError as e:
-            do_exit(1, "client_secrets.json file is not avialable. Download the secrets file (see documentation) and try again.")
+            do_exit(1, f"client_secrets.json file is not avialable. Download the secrets file and try again.\nSee: {constants.README_GETTING_STARTED}")
         except OSError as e:
             do_exit(1, f"failed to install secrets file: {e}")
     else:
@@ -209,17 +210,17 @@ def output_csv(name, file_list, output=None):
 
 
 def main():
+    print('#-'*20)
+    print(f'{constants.APP_NAME} -- VERSION: {constants.VERSION}')
+    print('#-'*20, '\n'*3)
+    wrapper = textwrap.TextWrapper(replace_whitespace=True, drop_whitespace=True, width=60)
+    welcome = f'{constants.APP_NAME} provides a Google Sheet that shows all of the files and owners within a google drive folder.'
+    print('\n'.join(wrapper.wrap(welcome)))
     
     added_file = None
     secrets = get_secrets()
     
-    drive = GDrive(secrets=secrets, scopes=constants.SCOPES)
-    
-#     return drive
-    
-    wrapper = textwrap.TextWrapper(replace_whitespace=True, drop_whitespace=True, width=60)
-    welcome = f'{constants.APP_NAME} provides a Google Sheet that shows all of the files and owners within a google drive folder.'
-    print('\n'.join(wrapper.wrap(welcome)))
+    drive = GDrive(secrets=secrets, scopes=constants.SCOPES)    
     
     
     while True:
