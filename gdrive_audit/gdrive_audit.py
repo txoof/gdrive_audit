@@ -105,14 +105,14 @@ def recurse_folders(drive, parents,
                 
     for f in result:
         if drive.MIMETYPES['folder'] == f.get('mimeType'):
-            print(f'Searching folder {i.get("name", "no name")}')
+            print(f'Searching folder {f.get("name", "no name")}')
             return_files, return_skipped = recurse_folders(drive=drive, parents=f['id'], 
                                          fields=fields, 
                                          file_list=file_list,
                                          skipped=skipped,
                                          depth=depth+1)
             file_list + return_files
-            skipped + return_files
+            skipped + return_skipped
         else:
             file_list.append(f)
             print(f'found {len(file_list)} files so far...')
@@ -210,6 +210,7 @@ def output_csv(name, file_list, output=None):
 
 def main():
     
+    added_file = None
     secrets = get_secrets()
     
     drive = GDrive(secrets=secrets, scopes=constants.SCOPES)
@@ -231,7 +232,13 @@ def main():
             folder_props = drive.get_properties(fileId=folder_id, fields=['owners', 'name', 'webViewLink', 'kind', 'id', 'mimeType'])
         except GDriveError as e:
             msg = f'failed to get information on this folder: {e}'
-            do_exit(1, msg)
+            logger.warning(msg)
+            print(f'Failed to get information for this folder.')
+            cont = prompts.prompt_for_confirmation('Try a new folder?', default=False)
+            if not cont:
+                break
+            else:
+                continue
 
 
         folder_name = folder_props.get('name', 'UNKNOWN FOLDER')
@@ -265,7 +272,7 @@ def main():
         if not cont:
             break
 
-    
+    print('Done.')
     return added_file
    
 
