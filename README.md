@@ -1,37 +1,3 @@
-# Notes
-
-## Scopes
-Probably can reduce the scopes to: 
-* https://www.googleapis.com/auth/drive
-
-
-see sample here: https://developers.google.com/drive/api/v3/reference/files/get?apix_params=%7B%22fileId%22%3A%221bTQyCQalR2Yxm12HrpPMUmvjS60zl82FvpCJ7k257Ag%22%2C%22supportsAllDrives%22%3Atrue%2C%22fields%22%3A%22owners%2CmimeType%2CwebViewLink%22%7D
-
-Fields:
-* supportsAllDrives: True
-* fields: owners,mimeType,webViewLink
-
-
-
-# To Do
-
-## Documentation 
-* upload secrets to google drive folder
-* add link to documentation
-* add link to documentation to software when secrets are not found
-* Add instructions for setting up build environment
-* add instructions for building
-
-## Program
-* reduce annoying log output
-* add option for setting loging verbosity on command line
-* add link to documentation when secrets are not found
-
-## Repo
-* Add .pkg to repo
-* Add sample pycodesign.ini to repo that has developer information removed
-
-
 # GDrive Audit
 Audit ownership of all files in a Google Drive folder.
 
@@ -110,14 +76,34 @@ For the curious, all cached information is stored in `~/.cache/gdrive_audit/`.
     * google-api-python-client
     * google-auth-httplib2
     * google-auth-oauthlib
+    * pyinstaller
 
-**Setup With Pipenv**
+**Setup Build Environment With Pipenv**
 
 Pipenv will create a virutal environment and install the appropriate modules:
 * `$ pip3 install pipenv`
 * `$ cd ./gdrive_audit`
 * `$ pipenv --python 3` 
 * `$ pipenv install`
+
+`gdrive_audit` can be run from the command line with the command below:
+
+`pipenv run python3 gdrive_audit.py`
+
+**Build Installable Package**
+
+Pyinstaller will create a one-file application that can be run by double clicking on the icon. This application will only run on the device on which it was created unless it is be signed, notarized and stapled through Apple's codesigning procedure. 
+
+PyInstaller works best from within the pipenv virtual environment:
+`pipenv run pyinstaller -F --hiddenimport=google-api-python-client --hiddenimport=googleapiclient --add-data ./gdrive_audit/library:./library  -c --clean --noconfirm ./gdrive_audit/gdrive_audit.py`
+
+**Package and Sign for MacOS Distribution**
+
+To make an installable package that will pass MacOS' gatekeeper security checks, The package must be signed, notarized and stapled. [PyCodeSign](https://github.com/txoof/codesign) can provide this service, but requires an Apple Developer licenses and some configuration. See the [README](https://github.com/txoof/codesign#readme) for more information on configuring setting up a developer ID and configuring your keychain. 
+
+A sample `pycodesign.ini` is provided as a template.
+
+`pycodesign -s -p -n -t ./pycodesign.ini`
 
 <a name=backendapi></a>
 ### Back End API
