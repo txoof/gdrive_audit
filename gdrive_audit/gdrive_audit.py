@@ -138,7 +138,7 @@ def get_folder_id():
         retry -= 1
         url = prompts.prompt_for_input('Paste the URL of a Google Drive folder to audit:\n')
         
-        match = re.match("https:\/\/drive\.google\.com\/(?:\S+\/)([a-zA-Z0-9-]+)(?:\S+)?$", url)
+        match = re.match("https:\/\/drive\.google\.com\/(?:\S+\/)([a-zA-Z0-9_-]+)(?:\S+)?$", url)
         if not match:
             print('That does not appear to be a valid google drive folder URL')
             continue
@@ -225,6 +225,7 @@ def main():
     
     while True:
         folder_id = get_folder_id()
+        logger.debug(f'folder_id: {folder_id}')
 
         if not folder_id:
             do_exit(1, 'No valid folder URL was provided. Exiting')
@@ -296,5 +297,12 @@ if __name__ == "__main__":
     f = main()
 
 
+
+
+
+
+
+
+logger.root.setLevel('DEBUG')
 
 
