@@ -133,7 +133,7 @@ class GDrive():
     def __str__(self):
         return f'GDrive()'
     
-    def __init__(self, secrets, scopes, cache='./', token='./token.json'):
+    def __init__(self, secrets, scopes, cache='./', token='token.json'):
         '''create a google drive interface for searching and returning file/folder information
         
         Args:
@@ -142,7 +142,8 @@ class GDrive():
         '''
         self.secrets = secrets
         self.scopes = scopes        
-        self.token = token
+        self.token = Path(cache)/token
+        logging.debug(f'Token: {self.token}')
         self.credentials = self.set_credentials(secrets=self.secrets, 
                                             scopes=self.scopes, 
                                             token=self.token)
@@ -160,6 +161,7 @@ class GDrive():
         token = Path(token).expanduser()
         secrets = Path(secrets).expanduser()
         creds = None
+        logging.debug(f'Token: {token}; Secrets: {secrets}')
 
         if token.exists():
             creds = Credentials.from_authorized_user_file(token, scopes)
@@ -173,7 +175,7 @@ class GDrive():
                 creds = flow.run_local_server(port=0)
             # Save the credentials for the next run
             try:
-                with open('token.json', 'w') as token:
+                with open(token, 'w') as token:
                     token.write(creds.to_json())
             except OSError as e:
                 raise GDRiveError(f'error writing token file: {token} - {e}')
@@ -481,9 +483,16 @@ class GDrive():
 
 
 
+# d = GDrive(secrets='/Users/aciuffo/.cache/gdrive_audit/client_secrets.json', scopes=['https://www.googleapis.com/auth/drive'], cache='~/.cache/gdrive_audit/')
+
+
+
+
+
+
 # import constants
 
-# sec = '../secrets/client_secret_910311278281-bh8qk3kmgk0veri3v8en260e76ipafpj.apps.googleusercontent.com.json'
+# sec = '/Users/aciuffo/.cache/gdrive_audit/client_secrets.json'
 # d = GDrive(secrets=sec, scopes=constants.SCOPES)
 
 # f = d.add_file(file='./foo.txt', name='always take the weather with you...', target_mimeType='docs')

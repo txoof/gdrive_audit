@@ -23,8 +23,18 @@ import sys
 from pathlib import Path
 
 from humanfriendly import prompts
+from google.auth.exceptions import RefreshError
 import textwrap
 
+
+
+
+
+
+
+
+# from library import GDrive
+# from library.GDrive import GDriveError
 
 
 
@@ -209,6 +219,23 @@ def output_csv(name, file_list, output=None):
 
 
 
+# # secrets= get_secrets()
+# secrets = '/Users/aciuffo/.cache/gdrive_audit/client_secrets.json'
+# drive = GDrive.GDrive(secrets=secrets, scopes=['https://www.googleapis.com/auth/drive'])    
+
+# drive.search(name="users")
+
+# secrets.exists()
+
+# logging.root.setLevel('DEBUG')
+
+# d = GDrive.GDrive(secrets='/Users/aciuffo/.cache/gdrive_audit/client_secrets.json', scopes=['https://www.googleapis.com/auth/drive'])
+
+
+
+
+
+
 def main():
     print('#-'*20)
     print(f'{constants.APP_NAME} -- VERSION: {constants.VERSION}')
@@ -219,8 +246,12 @@ def main():
     
     added_file = None
     secrets = get_secrets()
-    
-    drive = GDrive(secrets=secrets, scopes=constants.SCOPES)    
+    try:
+        drive = GDrive(secrets=secrets, scopes=constants.SCOPES, cache=constants.CACHE)    
+    except RefreshError as e:
+        print(f'Failed to refresh tokens. Exiting with error: {e}')
+        return
+        
     
     
     while True:
@@ -297,12 +328,5 @@ if __name__ == "__main__":
     f = main()
 
 
-
-
-
-
-
-
-logger.root.setLevel('DEBUG')
 
 
