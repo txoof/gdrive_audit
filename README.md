@@ -20,7 +20,8 @@ You will need a valid `client_secrets.json` file to setup and use the software f
 
 **To Get Started**
 
-* Download the program from this [link](https://github.com/txoof/gdrive_audit/blob/master/gdrive_audit.pkg) and run the `.pkg` installer by double clicking
+* Download the program from this [link](https://github.com/txoof/gdrive_audit/blob/master/gdrive_audit.zip) and unzip the executable.
+* Right click and choose "open"
     * You will likely need an admin password to complete the installation process
 * Obtain a `client_secrets.json` file and place it in your Downloads folder
     * ASH team members can download the [`client_secrets.json`](https://drive.google.com/file/d/1HpkPtTeQ75oDP7iIHZzQmUAVJpvk5slA/view?usp=sharing) file
